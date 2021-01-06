@@ -11,13 +11,13 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KmProjectsToolsApplication implements CommandLineRunner {
+public class KmProjectsToolsApplication  {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KmProjectsToolsApplication.class, args);
 	}
 
-	@Autowired
+	/*@Autowired
 	private RoleRepository roleRepository;
 
 	@Autowired
@@ -39,5 +39,5 @@ public class KmProjectsToolsApplication implements CommandLineRunner {
 
 	}
 
-
+*/
 }

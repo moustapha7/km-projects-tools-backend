@@ -15,9 +15,10 @@ public class Departement {
     private String name;
 
     public Departement() {
+
     }
 
-    public Departement( String name) {
+    public Departement(String name) {
         this.name = name;
     }
 
@@ -35,5 +36,13 @@ public class Departement {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "Departement{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }

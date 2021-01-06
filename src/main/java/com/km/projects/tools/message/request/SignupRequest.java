@@ -26,15 +26,20 @@ public class SignupRequest {
     @Email
     private String email;
 
+    private Departement departement;
+
     private boolean activated;
+
+
 
     private Set<String> role;
 
-    private Departement departement;
+
 
     @NotBlank
     @Size(min = 6, max = 40)
     private String password;
+
 
 
     public String getFirstname() {

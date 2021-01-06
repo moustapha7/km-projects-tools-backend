@@ -63,9 +63,11 @@ public class User {
     private Set<Role> roles = new HashSet<Role>();
 
     public User() {
+        super();
     }
 
     public User(String firstname,String name, String username, String email, String password, Departement departement, boolean activated) {
+        super();
         this.firstname = firstname;
         this.name = name;
         this.username = username;
@@ -167,6 +169,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", activated=" + activated +
                 ", profileUser='" + profileUser + '\'' +
+                ", departement=" + departement +
                 ", roles=" + roles +
                 '}';
     }

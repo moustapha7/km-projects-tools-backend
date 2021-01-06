@@ -4,9 +4,11 @@ import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.message.response.JwtResponse;
 import com.km.projects.tools.message.response.MessageResponse;
+import com.km.projects.tools.model.Departement;
 import com.km.projects.tools.model.ERole;
 import com.km.projects.tools.model.Role;
 import com.km.projects.tools.model.User;
+import com.km.projects.tools.repository.DepartementRepository;
 import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.security.jwt.JwtUtils;
@@ -24,6 +26,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -47,6 +50,19 @@ public class UtilisateurService {
 
     @Autowired
     JwtUtils jwtUtils;
+
+    @Autowired
+    private UtilisateurService utilisateurService;
+
+
+    @Autowired
+    private DepartementRepository departementRepository;
+
+
+    public List<Departement> getAllDepartements()
+    {
+        return departementRepository.findAll();
+    }
 
 
     public ResponseEntity<?> authenticateUser(LoginRequest loginRequest)
@@ -84,9 +100,15 @@ public class UtilisateurService {
         }
 
         // Create new user's account
-        User user = new User(signUpRequest.getFirstname(),signUpRequest.getName(),signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()),signUpRequest.getDepartement(), signUpRequest.isActivated());
+        User user = new User();
+
+        user.setFirstname(signUpRequest.getFirstname());
+        user.setName(signUpRequest.getName());
+        user.setUsername(signUpRequest.getUsername());
+        user.setEmail(signUpRequest.getEmail());
+        user.setPassword(encoder.encode(signUpRequest.getPassword()));
+        user.setDepartement(signUpRequest.getDepartement());
+
 
         Set<String> strRoles = signUpRequest.getRole();
         Set<Role> roles = new HashSet<>();
@@ -118,6 +140,7 @@ public class UtilisateurService {
             });
         }
 
+
         user.setRoles(roles);
         user.setActivated(true);
         user.setProfileUser(roles.toString());
@@ -126,7 +149,7 @@ public class UtilisateurService {
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
 
-    public ResponseEntity<?> registerClient( SignupRequest signUpRequest) {
+   /* public ResponseEntity<?> registerClient( SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
                     .badRequest()
@@ -170,7 +193,7 @@ public class UtilisateurService {
 
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
     }
-
+*/
 
 
 
