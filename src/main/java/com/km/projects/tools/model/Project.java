@@ -1,6 +1,8 @@
 package com.km.projects.tools.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 import java.util.Date;
 
 
@@ -13,13 +15,24 @@ public class Project {
     @Column(name ="PROJECT_ID")
     private long id;
 
+    @NotBlank
+    @Size(min = 3, max = 50)
     private String name;
+
+    @NotBlank
+    @Size(min = 10, max = 50)
     private String description;
 
+
     private Date dateDebut;
+
+
     private Date dateFin;
-    private int estimationJour;
-    private int estimationHeure;
+
+
+    private long estimationJour;
+
+    private long estimationHeure;
 
     @ManyToOne
     @JoinColumn(name = "TEAM_ID", nullable = true)
@@ -31,7 +44,11 @@ public class Project {
 
     @ManyToOne
     @JoinColumn(name = "PRODUCT_OWNER", nullable = true)
-    private User user;
+    private User userpo;
+
+    @ManyToOne
+    @JoinColumn(name = "TEACH_LEAD", nullable = true)
+    private User userteach;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_TYPE_ID", nullable = true)
@@ -45,9 +62,8 @@ public class Project {
     public Project() {
     }
 
-    public Project(long id, String name, String description, Date dateDebut, Date dateFin, int estimationJour,
-                   int estimationHeure, Team team, Client client, User user, ProjectType projectType,
-                   StatusProject statusProject) {
+    public Project(long id, String name,  String description,  Date dateDebut, Date dateFin,  long estimationJour,
+                   long estimationHeure, Team team, Client client, User userpo, User userteach, ProjectType projectType, StatusProject statusProject) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -57,7 +73,8 @@ public class Project {
         this.estimationHeure = estimationHeure;
         this.team = team;
         this.client = client;
-        this.user = user;
+        this.userpo = userpo;
+        this.userteach = userteach;
         this.projectType = projectType;
         this.statusProject = statusProject;
     }
@@ -102,19 +119,19 @@ public class Project {
         this.dateFin = dateFin;
     }
 
-    public int getEstimationJour() {
+    public long getEstimationJour() {
         return estimationJour;
     }
 
-    public void setEstimationJour(int estimationJour) {
+    public void setEstimationJour(long estimationJour) {
         this.estimationJour = estimationJour;
     }
 
-    public int getEstimationHeure() {
+    public long getEstimationHeure() {
         return estimationHeure;
     }
 
-    public void setEstimationHeure(int estimationHeure) {
+    public void setEstimationHeure(long estimationHeure) {
         this.estimationHeure = estimationHeure;
     }
 
@@ -134,12 +151,20 @@ public class Project {
         this.client = client;
     }
 
-    public User getUser() {
-        return user;
+    public User getUserpo() {
+        return userpo;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUserpo(User userpo) {
+        this.userpo = userpo;
+    }
+
+    public User getUserteach() {
+        return userteach;
+    }
+
+    public void setUserteach(User userteach) {
+        this.userteach = userteach;
     }
 
     public ProjectType getProjectType() {
@@ -170,7 +195,8 @@ public class Project {
                 ", estimationHeure=" + estimationHeure +
                 ", team=" + team +
                 ", client=" + client +
-                ", user=" + user +
+                ", userpo=" + userpo +
+                ", userteach=" + userteach +
                 ", projectType=" + projectType +
                 ", statusProject=" + statusProject +
                 '}';

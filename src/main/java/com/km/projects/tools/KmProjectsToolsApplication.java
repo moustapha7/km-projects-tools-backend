@@ -11,17 +11,18 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KmProjectsToolsApplication  {
+public class KmProjectsToolsApplication implements CommandLineRunner {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KmProjectsToolsApplication.class, args);
 	}
 
-	/*@Autowired
+	@Autowired
 	private RoleRepository roleRepository;
 
 	@Autowired
-	private DepartementRepository departementRepository;
+	private DepartementRepository  departementRepository;
+	
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -39,5 +40,4 @@ public class KmProjectsToolsApplication  {
 
 	}
 
-*/
 }

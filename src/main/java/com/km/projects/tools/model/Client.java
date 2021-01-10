@@ -1,6 +1,8 @@
 package com.km.projects.tools.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
 
 
 @Entity
@@ -15,10 +17,22 @@ public class Client {
     @Column(unique = true)
     private String code;
 
+    @NotBlank
     private String prenom;
+
+    @NotBlank
     private String nom;
+
+    @NotBlank
     private String adresse;
+
+    @NotBlank
+    @Column(unique = true)
     private String tel;
+
+    @NotBlank
+    @Email
+    @Column(unique = true)
     private String email;
 
     public Client() {

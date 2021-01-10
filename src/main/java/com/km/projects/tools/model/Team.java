@@ -1,6 +1,7 @@
 package com.km.projects.tools.model;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 
 @Entity
 @Table(name = "team")
@@ -11,6 +12,7 @@ public class Team {
     @Column(name ="TEAM_ID")
     private long id;
 
+    @NotBlank
     private String name;
 
     private String description;
