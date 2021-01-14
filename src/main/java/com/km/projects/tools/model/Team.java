@@ -2,6 +2,8 @@ package com.km.projects.tools.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "team")
@@ -12,9 +14,10 @@ public class Team {
     @Column(name ="TEAM_ID")
     private long id;
 
-    @NotBlank
+    @NotNull
     private String name;
 
+    @NotNull
     private String description;
 
     @ManyToOne
@@ -61,5 +64,15 @@ public class Team {
 
     public void setUser(User user) {
         this.user = user;
+    }
+
+    @Override
+    public String toString() {
+        return "Team{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", user=" + user +
+                '}';
     }
 }

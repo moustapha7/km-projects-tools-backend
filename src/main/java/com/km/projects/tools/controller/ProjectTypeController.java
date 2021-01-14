@@ -47,10 +47,10 @@ public class ProjectTypeController {
     @DeleteMapping("projectTypes/{id}")
     public Map<String, Boolean> deleteProjectType(@PathVariable(value = "id") long projectTypeId) throws ResourceNotFoundException
     {
-        ProjectType ProjectType = projectTypeRepository.findById(projectTypeId)
+        ProjectType projectType = projectTypeRepository.findById(projectTypeId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project Type non trouvé"));
 
-        projectTypeRepository.delete(ProjectType);
+        projectTypeRepository.delete(projectType);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;

@@ -20,7 +20,7 @@ public class Project {
     private String name;
 
     @NotBlank
-    @Size(min = 10, max = 50)
+    @Size(min = 5, max = 50)
     private String description;
 
 

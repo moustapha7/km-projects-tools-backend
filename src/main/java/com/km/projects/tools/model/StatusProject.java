@@ -16,8 +16,7 @@ public class StatusProject {
     public StatusProject() {
     }
 
-    public StatusProject(long id, String name) {
-        this.id = id;
+    public StatusProject(String name) {
         this.name = name;
     }
 
@@ -35,5 +34,13 @@ public class StatusProject {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @Override
+    public String toString() {
+        return "StatusProject{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
     }
 }
