@@ -3,13 +3,18 @@ package com.km.projects.tools.controller;
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.model.Project;
+import com.km.projects.tools.model.User;
 import com.km.projects.tools.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -115,6 +120,28 @@ public class ProjectController {
         }
 
     }
+
+
+    @GetMapping(path =  "/projectImages/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getPhoto(@PathVariable Long id) throws Exception {
+        Project project = projectRepository.findById(id).get();
+
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/project/"+ project.getPhotoName()));
+    }
+
+    @PostMapping(path = "/uploadPhoto/{id}")
+    public void uploadPhoto(MultipartFile file, @PathVariable Long id) throws Exception
+    {
+        Project project = projectRepository.findById(id).get();
+        project.setPhotoName(project.getName()+id+".png");
+        Files.write(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/project/"+ project.getPhotoName()),file.getBytes());
+        projectRepository.save(project);
+
+    }
+
+
+
+
 
     @GetMapping("/nombreProjects")
     public long getNombreProjects()

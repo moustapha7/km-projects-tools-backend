@@ -52,6 +52,8 @@ public class User {
 
     private String profileUser;
 
+    private  String photoName;
+
     @ManyToOne
     @JoinColumn(name = "DEPARTEMENT_ID", nullable = true)
     private Departement departement;
@@ -66,7 +68,7 @@ public class User {
         super();
     }
 
-    public User(String firstname,String name, String username, String email, String password, Departement departement, boolean activated) {
+    public User(String firstname,String name, String username, String email, String password, Departement departement, boolean activated, String photoName) {
         super();
         this.firstname = firstname;
         this.name = name;
@@ -75,6 +77,7 @@ public class User {
         this.password = password;
         this.activated =activated;
         this.departement =departement;
+        this.photoName = photoName;
 
     }
 
@@ -158,6 +161,15 @@ public class User {
         this.roles = roles;
     }
 
+
+    public String getPhotoName() {
+        return photoName;
+    }
+
+    public void setPhotoName(String photoName) {
+        this.photoName = photoName;
+    }
+
     @Override
     public String toString() {
         return "User{" +
@@ -169,6 +181,7 @@ public class User {
                 ", password='" + password + '\'' +
                 ", activated=" + activated +
                 ", profileUser='" + profileUser + '\'' +
+                ", photoName='" + photoName + '\'' +
                 ", departement=" + departement +
                 ", roles=" + roles +
                 '}';

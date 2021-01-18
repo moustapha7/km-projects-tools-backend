@@ -34,6 +34,8 @@ public class Project {
 
     private long estimationHeure;
 
+    private  String photoName;
+
     @ManyToOne
     @JoinColumn(name = "TEAM_ID", nullable = true)
     private Team team;
@@ -63,7 +65,7 @@ public class Project {
     }
 
     public Project(long id, String name,  String description,  Date dateDebut, Date dateFin,  long estimationJour,
-                   long estimationHeure, Team team, Client client, User userpo, User userteach, ProjectType projectType, StatusProject statusProject) {
+                   long estimationHeure,  String photoName, Team team, Client client, User userpo, User userteach, ProjectType projectType, StatusProject statusProject) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -71,6 +73,7 @@ public class Project {
         this.dateFin = dateFin;
         this.estimationJour = estimationJour;
         this.estimationHeure = estimationHeure;
+        this.photoName = photoName;
         this.team = team;
         this.client = client;
         this.userpo = userpo;
@@ -135,6 +138,14 @@ public class Project {
         this.estimationHeure = estimationHeure;
     }
 
+    public String getPhotoName() {
+        return photoName;
+    }
+
+    public void setPhotoName(String photoName) {
+        this.photoName = photoName;
+    }
+
     public Team getTeam() {
         return team;
     }
@@ -193,6 +204,7 @@ public class Project {
                 ", dateFin=" + dateFin +
                 ", estimationJour=" + estimationJour +
                 ", estimationHeure=" + estimationHeure +
+                ", photoName='" + photoName + '\'' +
                 ", team=" + team +
                 ", client=" + client +
                 ", userpo=" + userpo +
