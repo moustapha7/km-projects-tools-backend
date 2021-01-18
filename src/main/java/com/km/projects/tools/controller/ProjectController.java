@@ -122,15 +122,15 @@ public class ProjectController {
     }
 
 
-    @GetMapping(path =  "/projectImages/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getPhoto(@PathVariable Long id) throws Exception {
+    @GetMapping(path =  "/photoProject/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getPhotoProject(@PathVariable Long id) throws Exception {
         Project project = projectRepository.findById(id).get();
 
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/project/"+ project.getPhotoName()));
     }
 
-    @PostMapping(path = "/uploadPhoto/{id}")
-    public void uploadPhoto(MultipartFile file, @PathVariable Long id) throws Exception
+    @PostMapping(path = "/uploadPhotoProject/{id}")
+    public void uploadPhotoProject(MultipartFile file, @PathVariable Long id) throws Exception
     {
         Project project = projectRepository.findById(id).get();
         project.setPhotoName(project.getName()+id+".png");

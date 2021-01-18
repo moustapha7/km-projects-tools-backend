@@ -39,15 +39,15 @@ public class UserController {
     }
 
 
-    @GetMapping(path =  "/userImages/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getPhoto(@PathVariable Long id) throws Exception {
+    @GetMapping(path =  "/photoUser/{id}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getPhotoUser(@PathVariable Long id) throws Exception {
         User user = userRepository.findById(id).get();
 
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/user/"+ user.getPhotoName()));
     }
 
-    @PostMapping(path = "/uploadPhoto/{id}")
-    public void uploadPhoto(MultipartFile file, @PathVariable Long id) throws Exception
+    @PostMapping(path = "/uploadPhotoUser/{id}")
+    public void uploadPhotoUser(MultipartFile file, @PathVariable Long id) throws Exception
     {
         User user = userRepository.findById(id).get();
         user.setPhotoName(user.getName()+id+".png");
