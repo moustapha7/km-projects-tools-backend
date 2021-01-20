@@ -59,7 +59,6 @@ public class UserController {
 
 
 
-
     @GetMapping("/nombreUsers")
     public long getNombreUsers()
     {
