@@ -36,12 +36,14 @@ public class User {
 
     @NotBlank
     @Size(min = 3, max = 50)
+    @Column(unique = true)
     private String username;
 
     @NaturalId
     @NotBlank
     @Size(max = 50)
     @Email
+    @Column(unique = true)
     private String email;
 
     @NotBlank
@@ -179,7 +181,7 @@ public class User {
                 ", username='" + username + '\'' +
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
-                ", activated=" + activated +
+
                 ", profileUser='" + profileUser + '\'' +
                 ", photoName='" + photoName + '\'' +
                 ", departement=" + departement +

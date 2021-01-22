@@ -1,9 +1,12 @@
 package com.km.projects.tools.controller;
 
 
+import com.km.projects.tools.aop.LogUsername;
 import com.km.projects.tools.exception.ResourceNotFoundException;
+import com.km.projects.tools.model.Client;
 import com.km.projects.tools.model.User;
 import com.km.projects.tools.repository.UserRepository;
+import com.km.projects.tools.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -23,8 +26,18 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    UtilisateurService utilisateurService;
+
     @GetMapping("/listUsers")
+    @LogUsername
     public List<User> getAllUsers()
+    {
+        return userRepository.findAll();
+    }
+
+    @GetMapping("/list")
+    public List<User> getAllUser()
     {
         return userRepository.findAll();
     }
@@ -55,6 +68,21 @@ public class UserController {
         userRepository.save(user);
 
     }
+
+
+    @PutMapping("desactiveUser/{id}")
+    public ResponseEntity<User> desactiveCompte(@PathVariable(value = "id") long id)
+    {
+        return utilisateurService.desactiveCompte(id);
+    }
+
+
+    @PutMapping("activeUser/{id}")
+    public ResponseEntity<User> activeCompte(@PathVariable(value = "id") long id)
+    {
+        return utilisateurService.activeCompte(id);
+    }
+
 
 
 

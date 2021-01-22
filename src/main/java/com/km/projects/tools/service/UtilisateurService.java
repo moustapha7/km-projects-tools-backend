@@ -4,18 +4,18 @@ import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.message.response.JwtResponse;
 import com.km.projects.tools.message.response.MessageResponse;
-import com.km.projects.tools.model.Departement;
-import com.km.projects.tools.model.ERole;
-import com.km.projects.tools.model.Role;
-import com.km.projects.tools.model.User;
+import com.km.projects.tools.model.*;
+import com.km.projects.tools.repository.CodeOtpRepository;
 import com.km.projects.tools.repository.DepartementRepository;
 import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.security.jwt.JwtUtils;
 import com.km.projects.tools.security.services.UserDetailsImpl;
+import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -25,10 +25,8 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
+import java.time.ZonedDateTime;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -58,6 +56,9 @@ public class UtilisateurService {
 
     @Autowired
     private DepartementRepository departementRepository;
+
+    @Autowired
+    private CodeOtpRepository codeOtpRepository;
 
 
     public List<Departement> getAllDepartements()
@@ -96,6 +97,9 @@ public class UtilisateurService {
     }
 
 
+
+
+
     public ResponseEntity<?> registerUser( SignupRequest signUpRequest) {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
             return ResponseEntity
@@ -108,6 +112,20 @@ public class UtilisateurService {
                     .badRequest()
                     .body(new MessageResponse("Error: Email is already in use!"));
         }
+
+        if(!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: Please confirm your password"));
+        }
+
+        if(signUpRequest.getPassword() == null || signUpRequest.getPassword().equals("")) {
+            return ResponseEntity
+                    .badRequest()
+                    .body(new MessageResponse("Error: the password must not be empty"));
+        }
+
+
 
         // Create new user's account
         User user = new User();
@@ -165,10 +183,61 @@ public class UtilisateurService {
 
         user.setRoles(roles);
         user.setActivated(true);
+        user.setPhotoName("avatar.png");
         user.setProfileUser(roles.toString());
         userRepository.save(user);
 
+
         return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+    }
+
+
+    public CodeOtp saveCode(CodeOtp codeOtp)
+    {
+        Random rand = new Random();
+        int code = rand.nextInt(10000);
+        codeOtp.setDateGene(ZonedDateTime.now());
+        codeOtp.setCode(code);
+        codeOtpRepository.save(codeOtp);
+
+        return codeOtp;
+    }
+
+    //desactive compte by admin
+    public ResponseEntity<User> desactiveCompte(long id)
+    {
+        Optional<User> userInfo = userRepository.findById(id);
+        if(userInfo.isPresent())
+        {
+            User user1 = userInfo.get();
+            user1.setActivated(false);
+            return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
+
+        }
+        else
+        {
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+
+    }
+
+
+    //active compte by admin
+    public ResponseEntity<User> activeCompte(long id)
+    {
+        Optional<User> userInfo = userRepository.findById(id);
+        if(userInfo.isPresent())
+        {
+            User user1 = userInfo.get();
+            user1.setActivated(true);
+            return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
+
+        }
+        else
+        {
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+
     }
 
 

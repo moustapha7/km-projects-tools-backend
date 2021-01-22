@@ -40,6 +40,8 @@ public class SignupRequest {
     @Size(min = 6, max = 40)
     private String password;
 
+    private String confirmPassword;
+
 
 
     public String getFirstname() {
@@ -104,5 +106,13 @@ public class SignupRequest {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
     }
 }

@@ -5,6 +5,7 @@ package com.km.projects.tools.controller;
 import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.model.Departement;
+import com.km.projects.tools.model.User;
 import com.km.projects.tools.service.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,6 +54,7 @@ public class AuthController {
     {
         return utilisateurService.getAllDepartements();
     }
+
 
 
 }
