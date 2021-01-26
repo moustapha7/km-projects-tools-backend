@@ -93,7 +93,9 @@ public class UtilisateurService {
                 ,userDetails.getId()
                 , userDetails.getUsername()
                 , userDetails.getEmail()
-                ,  roles));
+                ,  roles
+                ,userDetails.getFirstname()
+                , userDetails.getName()));
     }
 
 
@@ -237,6 +239,35 @@ public class UtilisateurService {
         {
             return new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
+
+    }
+
+
+    public ResponseEntity<User> updateUser(long id,SignupRequest signUpRequest)
+    {
+
+        Optional<User> userInfo = userRepository.findById(id);
+        if(userInfo.isPresent())
+        {
+            Set<Role> roles = new HashSet<>();
+            User user1 = userInfo.get();
+            user1.setFirstname(signUpRequest.getFirstname());
+            user1.setName(signUpRequest.getName());
+            user1.setUsername(signUpRequest.getUsername());
+            user1.setEmail(signUpRequest.getEmail());
+            user1.setPassword(encoder.encode(signUpRequest.getPassword()));
+            user1.setDepartement(signUpRequest.getDepartement());
+
+            user1.setRoles(roles);
+            return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
+
+
+        }
+        else
+        {
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+
 
     }
 

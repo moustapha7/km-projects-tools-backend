@@ -3,6 +3,7 @@ package com.km.projects.tools.controller;
 
 import com.km.projects.tools.aop.LogUsername;
 import com.km.projects.tools.exception.ResourceNotFoundException;
+import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.model.Client;
 import com.km.projects.tools.model.User;
 import com.km.projects.tools.repository.UserRepository;
@@ -81,6 +82,13 @@ public class UserController {
     public ResponseEntity<User> activeCompte(@PathVariable(value = "id") long id)
     {
         return utilisateurService.activeCompte(id);
+    }
+
+
+    @PutMapping("udpateRole/{id}")
+    public ResponseEntity<User> updateRoleUser(@PathVariable(value = "id") long id, @RequestBody SignupRequest user)
+    {
+        return utilisateurService.updateUser(id, user);
     }
 
 
