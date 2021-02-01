@@ -184,7 +184,7 @@ public class UtilisateurService {
 
 
         user.setRoles(roles);
-        user.setActivated(true);
+        user.setActivated(false);
         user.setPhotoName("avatar.png");
         user.setProfileUser(roles.toString());
         userRepository.save(user);
@@ -243,31 +243,30 @@ public class UtilisateurService {
     }
 
 
-    public ResponseEntity<User> updateUser(long id,SignupRequest signUpRequest)
+    public ResponseEntity<User> updateUser(long id, User user)
     {
 
-        Optional<User> userInfo = userRepository.findById(id);
-        if(userInfo.isPresent())
+        Optional<User>  userinfo = userRepository.findById(id);
+
+
+        if(userinfo.isPresent())
         {
-            Set<Role> roles = new HashSet<>();
-            User user1 = userInfo.get();
-            user1.setFirstname(signUpRequest.getFirstname());
-            user1.setName(signUpRequest.getName());
-            user1.setUsername(signUpRequest.getUsername());
-            user1.setEmail(signUpRequest.getEmail());
-            user1.setPassword(encoder.encode(signUpRequest.getPassword()));
-            user1.setDepartement(signUpRequest.getDepartement());
 
-            user1.setRoles(roles);
+            User user1 = userinfo.get();
+
+            user1.setFirstname(user.getFirstname());
+            user1.setName(user.getName());
+            user1.setUsername(user.getUsername());
+            user1.setEmail(user.getEmail());
+            user1.setDepartement(user.getDepartement());
+
             return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
-
 
         }
         else
         {
             return new ResponseEntity<>( HttpStatus.NOT_FOUND);
         }
-
 
     }
 

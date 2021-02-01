@@ -1,22 +1,31 @@
 package com.km.projects.tools.controller;
 
 
-import com.km.projects.tools.aop.LogUsername;
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.message.request.SignupRequest;
+import com.km.projects.tools.message.response.MessageResponse;
 import com.km.projects.tools.model.Client;
+import com.km.projects.tools.model.ERole;
+import com.km.projects.tools.model.Role;
 import com.km.projects.tools.model.User;
+import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -28,20 +37,20 @@ public class UserController {
     private UserRepository userRepository;
 
     @Autowired
+    private RoleRepository roleRepository;
+
+    @Autowired
     UtilisateurService utilisateurService;
 
+    @Autowired
+    PasswordEncoder encoder;
+
     @GetMapping("/listUsers")
-    @LogUsername
     public List<User> getAllUsers()
     {
         return userRepository.findAll();
     }
 
-    @GetMapping("/list")
-    public List<User> getAllUser()
-    {
-        return userRepository.findAll();
-    }
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable long id) throws ResourceNotFoundException
@@ -85,11 +94,27 @@ public class UserController {
     }
 
 
-    @PutMapping("udpateRole/{id}")
-    public ResponseEntity<User> updateRoleUser(@PathVariable(value = "id") long id, @RequestBody SignupRequest user)
+    @PutMapping("users/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable(value = "id") long id, @RequestBody User user)
     {
-        return utilisateurService.updateUser(id, user);
+       return utilisateurService.updateUser(id,user);
     }
+
+
+    @GetMapping("listRoles")
+     public  List<Role> getAllRoles()
+     {
+         return roleRepository.findAll();
+     }
+
+
+
+    @GetMapping("/list")
+    public List<User> getAllUserss()
+    {
+        return userRepository.findAllUsers();
+    }
+
 
 
 
