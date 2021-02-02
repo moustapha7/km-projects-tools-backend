@@ -18,6 +18,7 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Boolean existsByEmail(String email);
 
+    Optional<User> findByCodeOtp(String code);
 
     @Query(
             value = "SELECT * FROM USERS u, user_roles ur where u.id = ur.user_id ",

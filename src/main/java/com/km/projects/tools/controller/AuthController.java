@@ -2,10 +2,14 @@ package com.km.projects.tools.controller;
 
 
 
+import com.km.projects.tools.exception.ResourceNotFoundException;
+import com.km.projects.tools.message.request.CodeOtpRequest;
 import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
+import com.km.projects.tools.message.response.JwtResponse;
 import com.km.projects.tools.model.Departement;
 import com.km.projects.tools.model.User;
+import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.service.UtilisateurService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,28 +29,25 @@ public class AuthController {
 
 
     @Autowired
+    UserRepository userRepository;
+
+    @Autowired
     UtilisateurService utilisateurService;
 
     @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+    public ResponseEntity<JwtResponse> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) throws ResourceNotFoundException {
         logger.debug("Authentification {} :", loginRequest);
 
         return ResponseEntity.ok(utilisateurService.authenticateUser(loginRequest).getBody());
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignupRequest signUpRequest) {
+    public ResponseEntity<User> registerUser(@Valid @RequestBody SignupRequest signUpRequest) throws ResourceNotFoundException{
 
 
-        return ResponseEntity.ok( utilisateurService.registerUser(signUpRequest));
+        return ResponseEntity.ok( utilisateurService.registerUser(signUpRequest).getBody());
     }
 
-  /*  @PostMapping("/signupClient")
-    public ResponseEntity<?> registerClient(@Valid @RequestBody SignupRequest signUpRequest) {
-
-
-        return ResponseEntity.ok(utilisateurService.registerClient(signUpRequest));
-    }*/
 
 
     @GetMapping("/listDepartement")
@@ -56,5 +57,19 @@ public class AuthController {
     }
 
 
+    @GetMapping("/users/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable long id) throws ResourceNotFoundException
+    {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("user non trouvé"));
+        return  ResponseEntity.ok().body(user);
+
+    }
+
+    @PostMapping("/verifUsers")
+    public ResponseEntity<User> verifUser( @RequestBody CodeOtpRequest codeOtpRequest) throws ResourceNotFoundException
+    {
+        return utilisateurService.verifCode(codeOtpRequest);
+    }
 
 }

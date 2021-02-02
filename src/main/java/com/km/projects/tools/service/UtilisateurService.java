@@ -1,17 +1,17 @@
 package com.km.projects.tools.service;
 
+import com.km.projects.tools.exception.ResourceNotFoundException;
+import com.km.projects.tools.message.request.CodeOtpRequest;
 import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.message.response.JwtResponse;
 import com.km.projects.tools.message.response.MessageResponse;
 import com.km.projects.tools.model.*;
-import com.km.projects.tools.repository.CodeOtpRepository;
 import com.km.projects.tools.repository.DepartementRepository;
 import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.security.jwt.JwtUtils;
 import com.km.projects.tools.security.services.UserDetailsImpl;
-import org.joda.time.DateTime;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,6 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -57,8 +56,6 @@ public class UtilisateurService {
     @Autowired
     private DepartementRepository departementRepository;
 
-    @Autowired
-    private CodeOtpRepository codeOtpRepository;
 
 
     public List<Departement> getAllDepartements()
@@ -67,16 +64,15 @@ public class UtilisateurService {
     }
 
 
-    public ResponseEntity<?> authenticateUser(LoginRequest loginRequest)
+    public ResponseEntity<JwtResponse> authenticateUser(LoginRequest loginRequest) throws ResourceNotFoundException
     {
 
         User user = userRepository.findByUsername(loginRequest.getUsername())
-                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + loginRequest.getUsername()));
+                .orElseThrow(() -> new ResourceNotFoundException("User Not Found with username: " + loginRequest.getUsername()));
         if(!user.isActivated())
         {
-            return  ResponseEntity.status(400).body("Votre Compte n'est pas encore activé");
+            throw new ResourceNotFoundException("Votre Compte n'est pas encore activé");
         }
-
 
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -102,33 +98,26 @@ public class UtilisateurService {
 
 
 
-    public ResponseEntity<?> registerUser( SignupRequest signUpRequest) {
+    public ResponseEntity<User> registerUser( SignupRequest signUpRequest) throws ResourceNotFoundException
+    {
         if (userRepository.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Username is already taken!"));
+            throw new ResourceNotFoundException("Error: Username is already taken!");
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Email is already in use!"));
+            throw new ResourceNotFoundException("Error: Email is already in use!");
         }
 
         if(!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: Please confirm your password"));
+            throw new ResourceNotFoundException("Error: Please confirm your password");
         }
 
         if(signUpRequest.getPassword() == null || signUpRequest.getPassword().equals("")) {
-            return ResponseEntity
-                    .badRequest()
-                    .body(new MessageResponse("Error: the password must not be empty"));
+            throw new ResourceNotFoundException("Error: the password must not be empty");
         }
 
 
-
+        Random rand = new Random();
         // Create new user's account
         User user = new User();
 
@@ -181,29 +170,47 @@ public class UtilisateurService {
                 }
             });
         }
-
+        String code =  String.format(String.valueOf(rand.nextInt(10000)));
 
         user.setRoles(roles);
         user.setActivated(false);
         user.setPhotoName("avatar.png");
         user.setProfileUser(roles.toString());
-        userRepository.save(user);
+        user.setCodeOtp(code);
 
 
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
+
+        return new ResponseEntity<>(userRepository.save(user), HttpStatus.OK);
     }
 
-
-    public CodeOtp saveCode(CodeOtp codeOtp)
+    public ResponseEntity<User> verifCode(CodeOtpRequest codeOtpRequest) throws ResourceNotFoundException
     {
-        Random rand = new Random();
-        int code = rand.nextInt(10000);
-        codeOtp.setDateGene(ZonedDateTime.now());
-        codeOtp.setCode(code);
-        codeOtpRepository.save(codeOtp);
+        Optional<User> userInfo = userRepository.findByUsername(codeOtpRequest.getUsername());
+        if(userInfo.isPresent())
+        {
+            User user1 = userInfo.get();
 
-        return codeOtp;
+            if(user1.isActivated() == true)
+            {
+                throw new ResourceNotFoundException("ce compte est deja activé");
+            }
+
+            if( !user1.getCodeOtp().equals(codeOtpRequest.getCodeOtp()) )
+            {
+                throw new ResourceNotFoundException("Le code otp est incorrect");
+            }
+
+                user1.setActivated(true);
+
+            return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
+        }
+        else
+        {
+            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+        }
+
     }
+
 
     //desactive compte by admin
     public ResponseEntity<User> desactiveCompte(long id)
