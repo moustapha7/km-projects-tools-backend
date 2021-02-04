@@ -1,11 +1,9 @@
 package com.km.projects.tools.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
+
 
 @Entity
 @Table(name = "commentaire")
@@ -31,6 +29,7 @@ public class Commentaire {
 
 
     public Commentaire() {
+        //  constructor
     }
 
     public Commentaire(long id, String content, Instant createdOn, String username, Project project) {

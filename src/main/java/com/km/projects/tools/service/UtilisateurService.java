@@ -5,15 +5,15 @@ import com.km.projects.tools.message.request.CodeOtpRequest;
 import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.message.response.JwtResponse;
-import com.km.projects.tools.message.response.MessageResponse;
-import com.km.projects.tools.model.*;
+import com.km.projects.tools.model.Departement;
+import com.km.projects.tools.model.ERole;
+import com.km.projects.tools.model.Role;
+import com.km.projects.tools.model.User;
 import com.km.projects.tools.repository.DepartementRepository;
 import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.security.jwt.JwtUtils;
 import com.km.projects.tools.security.services.UserDetailsImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,7 +21,6 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -31,7 +30,6 @@ import java.util.stream.Collectors;
 @Service
 public class UtilisateurService {
 
-    private  final Logger logger = LoggerFactory.getLogger(this.getClass());
 
 
     @Autowired
@@ -48,9 +46,6 @@ public class UtilisateurService {
 
     @Autowired
     JwtUtils jwtUtils;
-
-    @Autowired
-    private UtilisateurService utilisateurService;
 
 
     @Autowired
@@ -112,7 +107,7 @@ public class UtilisateurService {
             throw new ResourceNotFoundException("Error: Please confirm your password");
         }
 
-        if(signUpRequest.getPassword() == null || signUpRequest.getPassword().equals("")) {
+        if(signUpRequest.getPassword() == null ) {
             throw new ResourceNotFoundException("Error: the password must not be empty");
         }
 
@@ -190,7 +185,7 @@ public class UtilisateurService {
         {
             User user1 = userInfo.get();
 
-            if(user1.isActivated() == true)
+            if(user1.isActivated())
             {
                 throw new ResourceNotFoundException("ce compte est deja activé");
             }
@@ -206,7 +201,7 @@ public class UtilisateurService {
         }
         else
         {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Cet utilisateur :" + codeOtpRequest.getUsername() +" n'existe pas");
         }
 
     }

@@ -17,7 +17,7 @@ public class Departement {
     private String name;
 
     public Departement() {
-
+        //  constructor
     }
 
     public Departement(String name) {

@@ -1,9 +1,7 @@
 package com.km.projects.tools.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
 
 @Entity
 @Table(name = "team")
@@ -14,10 +12,10 @@ public class Team {
     @Column(name ="TEAM_ID")
     private long id;
 
-    @NotNull
+    @Column(nullable = false)
     private String name;
 
-    @NotNull
+    @Column(nullable = false)
     private String description;
 
     @ManyToOne
@@ -25,6 +23,7 @@ public class Team {
     private User user;
 
     public Team() {
+        //  constructor
     }
 
     public Team(long id, String name, String description, User user) {

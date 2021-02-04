@@ -36,6 +36,7 @@ public class Client {
     private String email;
 
     public Client() {
+    //  constructor
     }
 
     public Client(long id, String code, String prenom, String nom, String adresse, String tel, String email) {

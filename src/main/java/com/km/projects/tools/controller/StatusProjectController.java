@@ -21,7 +21,7 @@ public class StatusProjectController {
 
 
     @GetMapping("/statusProjects")
-    private List<StatusProject> getAllSatusProject()
+    public List<StatusProject> getAllStatusProject()
     {
         return statusProjectRepository.findAll();
     }

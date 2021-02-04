@@ -14,6 +14,7 @@ public class StatusProject {
     private String name;
 
     public StatusProject() {
+        //  constructor
     }
 
     public StatusProject(String name) {

@@ -62,6 +62,7 @@ public class Project {
 
 
     public Project() {
+        // constructor
     }
 
     public Project(long id, String name,  String description,  Date dateDebut, Date dateFin,  long estimationJour,

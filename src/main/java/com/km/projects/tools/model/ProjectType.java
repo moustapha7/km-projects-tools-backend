@@ -17,6 +17,7 @@ public class ProjectType {
     private String name;
 
     public ProjectType() {
+        //  constructor
     }
 
     public ProjectType(long id, String name) {

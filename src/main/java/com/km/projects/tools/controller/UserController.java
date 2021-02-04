@@ -2,30 +2,22 @@ package com.km.projects.tools.controller;
 
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
-import com.km.projects.tools.message.request.SignupRequest;
-import com.km.projects.tools.message.response.MessageResponse;
-import com.km.projects.tools.model.Client;
-import com.km.projects.tools.model.ERole;
 import com.km.projects.tools.model.Role;
 import com.km.projects.tools.model.User;
 import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -63,14 +55,14 @@ public class UserController {
 
 
     @GetMapping(path =  "/photoUser/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getPhotoUser(@PathVariable Long id) throws Exception {
+    public byte[] getPhotoUser(@PathVariable Long id) throws IOException {
         User user = userRepository.findById(id).get();
 
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/user/"+ user.getPhotoName()));
     }
 
     @PostMapping(path = "/uploadPhotoUser/{id}")
-    public void uploadPhotoUser(MultipartFile file, @PathVariable Long id) throws Exception
+    public void uploadPhotoUser(MultipartFile file, @PathVariable Long id) throws IOException
     {
         User user = userRepository.findById(id).get();
         user.setPhotoName(user.getName()+id+".png");

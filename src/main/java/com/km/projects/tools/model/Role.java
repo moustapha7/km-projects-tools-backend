@@ -15,7 +15,7 @@ public class Role {
     private ERole name;
 
     public Role() {
-
+        //  constructor
     }
 
     public Role(ERole name) {

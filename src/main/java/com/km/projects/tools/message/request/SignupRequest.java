@@ -1,7 +1,6 @@
 package com.km.projects.tools.message.request;
 
 import com.km.projects.tools.model.Departement;
-
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;

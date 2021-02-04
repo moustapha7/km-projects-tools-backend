@@ -3,7 +3,6 @@ package com.km.projects.tools.controller;
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.model.Project;
-import com.km.projects.tools.model.User;
 import com.km.projects.tools.repository.ProjectRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -13,6 +12,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
@@ -68,10 +68,10 @@ public class ProjectController {
     @DeleteMapping("projects/{id}")
     public Map<String, Boolean> deleteProject(@PathVariable(value = "id") long projectId) throws ResourceNotFoundException
     {
-        Project Project = projectRepository.findById(projectId)
+        Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project  non trouvé"));
 
-        projectRepository.delete(Project);
+        projectRepository.delete(project);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;
@@ -123,14 +123,15 @@ public class ProjectController {
 
 
     @GetMapping(path =  "/photoProject/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getPhotoProject(@PathVariable Long id) throws Exception {
+    public byte[] getPhotoProject(@PathVariable Long id) throws  IOException {
         Project project = projectRepository.findById(id).get();
 
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/project/"+ project.getPhotoName()));
+
     }
 
     @PostMapping(path = "/uploadPhotoProject/{id}")
-    public void uploadPhotoProject(MultipartFile file, @PathVariable Long id) throws Exception
+    public void uploadPhotoProject(MultipartFile file, @PathVariable Long id) throws IOException
     {
         Project project = projectRepository.findById(id).get();
         project.setPhotoName(project.getName()+id+".png");
