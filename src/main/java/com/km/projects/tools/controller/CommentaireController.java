@@ -61,7 +61,7 @@ public class CommentaireController {
 
     }
 
-    @GetMapping("/comments/nombre")
+    @GetMapping("/nombreComments")
     public long getNombreComments()
     {
         return  commentaireRepository.count();

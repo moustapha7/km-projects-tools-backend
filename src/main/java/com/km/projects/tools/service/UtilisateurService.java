@@ -1,6 +1,7 @@
 package com.km.projects.tools.service;
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
+import com.km.projects.tools.message.request.ChangePasswordRequest;
 import com.km.projects.tools.message.request.CodeOtpRequest;
 import com.km.projects.tools.message.request.LoginRequest;
 import com.km.projects.tools.message.request.SignupRequest;
@@ -21,6 +22,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -74,6 +76,8 @@ public class UtilisateurService {
             throw new ResourceNotFoundException("Votre Compte n'est pas encore activé");
         }
 
+
+
         Authentication authentication = authenticationManager.authenticate(
                 new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
 
@@ -91,7 +95,8 @@ public class UtilisateurService {
                 , userDetails.getEmail()
                 ,  roles
                 ,userDetails.getFirstname()
-                , userDetails.getName()));
+                , userDetails.getName()
+                ,userDetails.getDepartement()));
     }
 
 
@@ -250,29 +255,72 @@ public class UtilisateurService {
     }
 
 
-    public ResponseEntity<User> updateUser(long id, User user)
+    public ResponseEntity<User> updateUser( SignupRequest signupRequest) throws ResourceNotFoundException
     {
 
-        Optional<User>  userinfo = userRepository.findById(id);
+        Optional<User>  userinfo = userRepository.findByUsername(signupRequest.getUsername());
 
+        if (userRepository.existsByUsername(signupRequest.getUsername())) {
+            throw new ResourceNotFoundException("Error: Username is already taken!");
+        }
 
         if(userinfo.isPresent())
         {
 
             User user1 = userinfo.get();
 
-            user1.setFirstname(user.getFirstname());
-            user1.setName(user.getName());
-            user1.setUsername(user.getUsername());
-            user1.setEmail(user.getEmail());
-            user1.setDepartement(user.getDepartement());
+            user1.setFirstname(signupRequest.getFirstname());
+            user1.setName(signupRequest.getName());
+            user1.setUsername(signupRequest.getUsername());
+            user1.setEmail(signupRequest.getEmail());
 
             return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
 
         }
         else
         {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Cet User n'existe pas");
+        }
+
+    }
+
+    public ResponseEntity<User> changePassword(ChangePasswordRequest changePasswordRequest) throws ResourceNotFoundException
+    {
+
+
+        Optional<User> userInfo = userRepository.findByUsername(changePasswordRequest.getUsername());
+
+        String username;
+
+        Object principal = SecurityContextHolder.getContext().getAuthentication(). getPrincipal();
+        if (principal instanceof UserDetails) {
+            username = ((UserDetails)principal).getUsername();
+        } else {
+            username = principal. toString();
+
+        }
+
+        if(userInfo.isPresent())
+        {
+
+            User user1 = userInfo.get();
+
+            if(!changePasswordRequest.getNewPassword().equals(changePasswordRequest.getConfirmNewPassword()))
+            {
+                throw new ResourceNotFoundException("Error: Please confirm your password");
+            }
+
+            if(!username.equals(changePasswordRequest.getUsername()))
+            {
+                throw new ResourceNotFoundException("ce nest pas votre compte");
+            }
+            user1.setPassword(encoder.encode(changePasswordRequest.getNewPassword()));
+            return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
+
+        }
+        else
+        {
+            throw new ResourceNotFoundException("Cet User n'existe pas");
         }
 
     }

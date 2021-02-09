@@ -1,4 +1,6 @@
 package com.km.projects.tools.message.response;
+import com.km.projects.tools.model.Departement;
+
 import java.util.List;
 
 public class JwtResponse {
@@ -10,8 +12,9 @@ public class JwtResponse {
     private List<String> roles;
     private String firstname;
     private String name ;
+    private Departement departement;
 
-    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String firstname, String name) {
+    public JwtResponse(String accessToken, Long id, String username, String email, List<String> roles, String firstname, String name, Departement departement) {
         this.token = accessToken;
         this.id = id;
         this.username = username;
@@ -19,6 +22,7 @@ public class JwtResponse {
         this.roles = roles;
         this.firstname = firstname;
         this.name = name;
+        this.departement = departement;
     }
 
     public String getAccessToken() {
@@ -79,5 +83,13 @@ public class JwtResponse {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
     }
 }

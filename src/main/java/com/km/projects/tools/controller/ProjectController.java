@@ -66,7 +66,7 @@ public class ProjectController {
     }
 
     @DeleteMapping("projects/{id}")
-    public Map<String, Boolean> deleteProject(@PathVariable(value = "id") long projectId) throws ResourceNotFoundException
+    public Map<String, Boolean> deleteProject(@PathVariable (value = "id") long projectId) throws ResourceNotFoundException
     {
         Project Project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project  non trouvé"));
@@ -79,7 +79,7 @@ public class ProjectController {
     }
 
     @PutMapping("projects/{id}")
-    public  ResponseEntity<Project> updateProject(@PathVariable(value = "id") long id, @RequestBody Project project)
+    public  ResponseEntity<Project> updateProject(@PathVariable (value = "id") long id, @RequestBody Project project)
     {
         Optional<Project> projectInfo = projectRepository.findById(id);
 

@@ -2,6 +2,8 @@ package com.km.projects.tools.controller;
 
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
+import com.km.projects.tools.message.request.ChangePasswordRequest;
+import com.km.projects.tools.message.request.CodeOtpRequest;
 import com.km.projects.tools.message.request.SignupRequest;
 import com.km.projects.tools.message.response.MessageResponse;
 import com.km.projects.tools.model.Client;
@@ -94,10 +96,10 @@ public class UserController {
     }
 
 
-    @PutMapping("users/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable(value = "id") long id, @RequestBody User user)
+    @PostMapping("updateUsers")
+    public ResponseEntity<User> updateUser( @RequestBody SignupRequest signupRequest) throws ResourceNotFoundException
     {
-       return utilisateurService.updateUser(id,user);
+       return utilisateurService.updateUser(signupRequest);
     }
 
 
@@ -115,9 +117,11 @@ public class UserController {
         return userRepository.findAllUsers();
     }
 
-
-
-
+    @PostMapping("/changePassword")
+    public ResponseEntity<User> changePassword( @RequestBody ChangePasswordRequest changePasswordRequest) throws ResourceNotFoundException
+    {
+        return utilisateurService.changePassword(changePasswordRequest);
+    }
 
 
     @GetMapping("/nombreUsers")
