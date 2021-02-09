@@ -4,6 +4,7 @@ package com.km.projects.tools.controller;
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.model.Client;
 import com.km.projects.tools.repository.ClientRepository;
+import com.sun.org.apache.regexp.internal.RE;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -40,8 +41,15 @@ public class ClientController {
 
 
     @PostMapping("/clients")
-    public ResponseEntity<Client> createClient(@Validated @RequestBody Client client)
+    public ResponseEntity<Client> createClient(@Validated @RequestBody Client client) throws ResourceNotFoundException
     {
+        if (clientRepository.existsByEmail(client.getEmail())) {
+            throw new ResourceNotFoundException("Error: Email is already taken!");
+        }
+
+        if (clientRepository.existsByTel(client.getTel())) {
+            throw new ResourceNotFoundException("Error: Ce numero téléphone existe déja!");
+        }
 
         Random rand = new Random();
         String codeClient = String.format("Cli_"+rand.nextInt(100));
@@ -66,11 +74,13 @@ public class ClientController {
     }
 
     @PutMapping("clients/{id}")
-    public  ResponseEntity<Client> updateClient(@PathVariable(value = "id") long id, @RequestBody Client client)
+    public  ResponseEntity<Client> updateClient(@PathVariable(value = "id") long id, @RequestBody Client client) throws ResourceNotFoundException
     {
+
+
         Optional<Client> clientInfo = clientRepository.findById(id);
 
-        if (clientInfo.isPresent())
+        if (clientInfo.isPresent() && client.getEmail().equals(client.getEmail()))
         {
             Client client1= clientInfo.get();
             client1.setCode(client.getCode());
@@ -83,9 +93,10 @@ public class ClientController {
             return new ResponseEntity<>(clientRepository.save(client1), HttpStatus.OK);
 
         }
+
         else
         {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
+            throw new ResourceNotFoundException("Error: Email is already taken!");
         }
 
     }
