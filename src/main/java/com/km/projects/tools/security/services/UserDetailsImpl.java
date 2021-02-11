@@ -3,6 +3,7 @@ package com.km.projects.tools.security.services;
 
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.km.projects.tools.model.Departement;
 import com.km.projects.tools.model.User;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -20,12 +21,12 @@ public class UserDetailsImpl implements UserDetails {
 
     private String username;
 
-
-
     private String email;
 
     private String firstname;
     private String name ;
+
+    private Departement departement;
 
     @JsonIgnore
     private String password;
@@ -33,7 +34,7 @@ public class UserDetailsImpl implements UserDetails {
     private Collection<? extends GrantedAuthority> authorities;
 
     public UserDetailsImpl(Long id, String username, String email, String password, Collection<? extends GrantedAuthority> authorities
-                                               ,String firstname, String name) {
+                                               ,String firstname, String name, Departement departement) {
         this.id = id;
         this.username = username;
         this.email = email;
@@ -41,6 +42,7 @@ public class UserDetailsImpl implements UserDetails {
         this.authorities = authorities;
         this.firstname = firstname;
         this.name = name;
+        this.departement = departement;
     }
 
     public void setAuthorities(Collection<? extends GrantedAuthority> authorities) {
@@ -59,7 +61,8 @@ public class UserDetailsImpl implements UserDetails {
                 user.getPassword(),
                 authorities,
                 user.getFirstname(),
-                user.getName());
+                user.getName(),
+                user.getDepartement());
     }
 
     @Override
@@ -119,6 +122,14 @@ public class UserDetailsImpl implements UserDetails {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Departement getDepartement() {
+        return departement;
+    }
+
+    public void setDepartement(Departement departement) {
+        this.departement = departement;
     }
 
     @Override
