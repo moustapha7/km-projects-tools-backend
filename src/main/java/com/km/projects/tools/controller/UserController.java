@@ -3,31 +3,17 @@ package com.km.projects.tools.controller;
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.message.request.ChangePasswordRequest;
-import com.km.projects.tools.message.request.CodeOtpRequest;
 import com.km.projects.tools.message.request.SignupRequest;
-import com.km.projects.tools.message.response.MessageResponse;
-import com.km.projects.tools.model.Client;
-import com.km.projects.tools.model.ERole;
 import com.km.projects.tools.model.Role;
 import com.km.projects.tools.model.User;
-import com.km.projects.tools.repository.RoleRepository;
-import com.km.projects.tools.repository.UserRepository;
 import com.km.projects.tools.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Optional;
-import java.util.Set;
 
 @CrossOrigin(origins = {"http://localhost:4200"})
 @RestController
@@ -36,49 +22,33 @@ public class UserController {
 
 
     @Autowired
-    private UserRepository userRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
-
-    @Autowired
     UtilisateurService utilisateurService;
 
-    @Autowired
-    PasswordEncoder encoder;
 
     @GetMapping("/listUsers")
     public List<User> getAllUsers()
     {
-        return userRepository.findAll();
+        return utilisateurService.getAllUsers();
     }
 
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> getUserById(@PathVariable long id) throws ResourceNotFoundException
     {
-        User user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("user non trouvé"));
-        return  ResponseEntity.ok().body(user);
-
+        return  utilisateurService.getUserById(id);
     }
 
 
     @GetMapping(path =  "/photoUser/{id}", produces = MediaType.IMAGE_PNG_VALUE)
-    public byte[] getPhotoUser(@PathVariable Long id) throws Exception {
-        User user = userRepository.findById(id).get();
-
-        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/user/"+ user.getPhotoName()));
+    public byte[] getPhotoUser(@PathVariable Long id) throws Exception
+    {
+        return utilisateurService.getPhotoUser(id);
     }
 
     @PostMapping(path = "/uploadPhotoUser/{id}")
     public void uploadPhotoUser(MultipartFile file, @PathVariable Long id) throws Exception
     {
-        User user = userRepository.findById(id).get();
-        user.setPhotoName(user.getName()+id+".png");
-        Files.write(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/user/"+ user.getPhotoName()),file.getBytes());
-        userRepository.save(user);
-
+       utilisateurService.uploadPhotoUser(file,id);
     }
 
 
@@ -106,16 +76,9 @@ public class UserController {
     @GetMapping("listRoles")
      public  List<Role> getAllRoles()
      {
-         return roleRepository.findAll();
+         return utilisateurService.getAllRoles();
      }
 
-
-
-    @GetMapping("/list")
-    public List<User> getAllUserss()
-    {
-        return userRepository.findAllUsers();
-    }
 
     @PostMapping("/changePassword")
     public ResponseEntity<User> changePassword( @RequestBody ChangePasswordRequest changePasswordRequest) throws ResourceNotFoundException
@@ -127,6 +90,6 @@ public class UserController {
     @GetMapping("/nombreUsers")
     public long getNombreUsers()
     {
-        return userRepository.count();
+        return utilisateurService.getNombreUsers();
     }
 }

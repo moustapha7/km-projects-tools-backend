@@ -3,14 +3,14 @@ package com.km.projects.tools.controller;
 
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.model.ProjectType;
-import com.km.projects.tools.repository.ProjectTypeRepository;
+import com.km.projects.tools.service.ProjectTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
+import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -18,70 +18,43 @@ import java.util.*;
 public class ProjectTypeController {
 
     @Autowired
-    private ProjectTypeRepository projectTypeRepository;
+    private ProjectTypeService projectTypeService;
 
     @GetMapping("/projectTypes")
     public List<ProjectType> getAllProjectType()
     {
-        List<ProjectType> projectTypes = new ArrayList<>();
-        projectTypeRepository.findAll().forEach(projectTypes::add);
-        return projectTypes;
+        return projectTypeService.getAllProjectType();
     }
 
     @GetMapping("projectTypes/{id}")
     public ResponseEntity<ProjectType> getProjectTypeById(@PathVariable(value = "id") long projectTypeId) throws ResourceNotFoundException
     {
-        ProjectType projectType = projectTypeRepository.findById(projectTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("project Type non trouvé"));
-        return  ResponseEntity.ok().body(projectType);
-
+        return  projectTypeService.getProjectTypeById(projectTypeId);
     }
 
 
     @PostMapping("/projectTypes")
     public ProjectType createProjectType(@Validated @RequestBody ProjectType projectType)
     {
-        return projectTypeRepository.save(projectType);
+        return projectTypeService.createProjectType(projectType);
     }
 
     @DeleteMapping("projectTypes/{id}")
     public Map<String, Boolean> deleteProjectType(@PathVariable(value = "id") long projectTypeId) throws ResourceNotFoundException
     {
-        ProjectType projectType = projectTypeRepository.findById(projectTypeId)
-                .orElseThrow(() -> new ResourceNotFoundException("Project Type non trouvé"));
-
-        projectTypeRepository.delete(projectType);
-        Map<String, Boolean> response = new HashMap<>();
-        response.put("deleted", Boolean.TRUE);
-        return response;
-
+        return projectTypeService.deleteProjectType(projectTypeId);
     }
 
     @PutMapping("projectTypes/{id}")
-    public  ResponseEntity<ProjectType> updateProjectType(@PathVariable(value = "id") long id, @RequestBody ProjectType projectType)
+    public  ResponseEntity<ProjectType> updateProjectType(@PathVariable(value = "id") long id, @RequestBody ProjectType projectType) throws ResourceNotFoundException
     {
-        Optional<ProjectType> projectTypeInfo = projectTypeRepository.findById(id);
-
-        if (projectTypeInfo.isPresent())
-        {
-            ProjectType projectType1= projectTypeInfo.get();
-            projectType1.setName(projectType.getName());
-
-            return new ResponseEntity<>(projectTypeRepository.save(projectType1), HttpStatus.OK);
-
-        }
-        else
-        {
-            return new ResponseEntity<>( HttpStatus.NOT_FOUND);
-        }
-
+        return projectTypeService.updateProjectType(id,projectType);
     }
 
     @GetMapping("/nombreProjectTypes")
     public long getNombreProjectType1s()
     {
-        return  projectTypeRepository.count();
-
+        return  projectTypeService.getNombreProjectTypes();
     }
 
 
