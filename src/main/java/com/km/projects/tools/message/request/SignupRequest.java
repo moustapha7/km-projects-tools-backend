@@ -10,11 +10,11 @@ import java.util.Set;
 public class SignupRequest {
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 2, max = 50)
     private String firstname;
 
     @NotBlank
-    @Size(min = 3, max = 50)
+    @Size(min = 1, max = 50)
     private String name;
 
     @NotBlank
