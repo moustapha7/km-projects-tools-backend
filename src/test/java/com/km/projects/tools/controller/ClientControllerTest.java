@@ -2,7 +2,6 @@ package com.km.projects.tools.controller;
 
 import com.km.projects.tools.KmProjectsToolsApplication;
 import com.km.projects.tools.model.Client;
-import javafx.application.Application;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,7 +15,6 @@ import org.springframework.web.client.HttpClientErrorException;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @RunWith(SpringRunner.class)
@@ -52,21 +50,22 @@ class ClientControllerTest {
       assertNotNull(client);
     }
 
-/*
+
     @Test
     void createClient() {
         Client client = new Client();
+        client.setId(1L);
         client.setCode("cli1");
         client.setAdresse("dakar");
         client.setEmail("ada@gmail.com");
         client.setTel("77 544 11 66");
         client.setNom("tata");
-        client.setPrenom("tata");
+        client.setPrenom("mama");
         ResponseEntity<Client> postResponse = restTemplate.postForEntity(getRootUrl() + "/api/clients", client, Client.class);
         assertNotNull(postResponse);
         assertNotNull(postResponse.getBody());
     }
-*/
+
 
     @Test
     void deleteClient() {
