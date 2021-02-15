@@ -92,4 +92,12 @@ public class UserController {
     {
         return utilisateurService.getNombreUsers();
     }
+
+    @PutMapping("/updateRoleUser/{id}")
+    public ResponseEntity<User> updateRoleUser(@PathVariable(value = "id") long id, @RequestBody SignupRequest signupRequest) throws ResourceNotFoundException
+    {
+        return utilisateurService.updateRoleUser(id,signupRequest);
+    }
+
+
 }

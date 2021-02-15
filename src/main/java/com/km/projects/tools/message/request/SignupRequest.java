@@ -1,5 +1,6 @@
 package com.km.projects.tools.message.request;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.km.projects.tools.model.Departement;
 
 import javax.validation.constraints.Email;
@@ -8,6 +9,8 @@ import javax.validation.constraints.Size;
 import java.util.Set;
 
 public class SignupRequest {
+
+    private long id;
 
     @NotBlank
     @Size(min = 2, max = 50)
@@ -31,10 +34,15 @@ public class SignupRequest {
     private boolean activated;
 
 
-
     private Set<String> role;
 
+    public long getId() {
+        return id;
+    }
 
+    public void setId(long id) {
+        this.id = id;
+    }
 
     @NotBlank
     @Size(min = 6, max = 40)
