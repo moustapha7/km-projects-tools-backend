@@ -3,11 +3,8 @@ package com.km.projects.tools.service;
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.message.request.ChangePasswordRequest;
 import com.km.projects.tools.message.request.SignupRequest;
-import com.km.projects.tools.model.ERole;
-import com.km.projects.tools.model.Role;
-import com.km.projects.tools.model.User;
-import com.km.projects.tools.repository.RoleRepository;
-import com.km.projects.tools.repository.UserRepository;
+import com.km.projects.tools.model.*;
+import com.km.projects.tools.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -39,6 +36,15 @@ public class UtilisateurService {
 
     @Autowired
     private UtilisateurService utilisateurService;
+
+    @Autowired
+    private TechleadRepository techleadRepository;
+
+    @Autowired
+    private PownerRepository pownerRepository;
+
+    @Autowired
+    private DeveloppeurRepository developpeurRepository;
 
 
 
@@ -231,17 +237,41 @@ public class UtilisateurService {
                                 .orElseThrow(() -> new RuntimeException("Error: Role TEch Lead is not found."));
                         roles.add(teachleadRole);
 
+                        Techlead techlead = new Techlead();
+                        techlead.setFirstname(user1.getFirstname());
+                        techlead.setName(user1.getName());
+                        techlead.setUsername(user1.getUsername());
+                        techlead.setEmail(user1.getEmail());
+                        techlead.setPhotoName(user1.getPhotoName());
+                        techleadRepository.save(techlead);
+
                         break;
                     case "powner":
                         Role pownerRole = roleRepository.findByName(ERole.ROLE_POWNER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role Product Owner is not found."));
                         roles.add(pownerRole);
 
+                        Powner powner = new Powner();
+                        powner.setFirstname(user1.getFirstname());
+                        powner.setName(user1.getName());
+                        powner.setUsername(user1.getUsername());
+                        powner.setEmail(user1.getEmail());
+                        powner.setPhotoName(user1.getPhotoName());
+                        pownerRepository.save(powner);
+
                         break;
                     case "dev":
                         Role devRole = roleRepository.findByName(ERole.ROLE_DEV)
                                 .orElseThrow(() -> new RuntimeException("Error: Role DEV is not found."));
                         roles.add(devRole);
+
+                        Developpeur developpeur  = new Developpeur();
+                        developpeur.setFirstname(user1.getFirstname());
+                        developpeur.setName(user1.getName());
+                        developpeur.setUsername(user1.getUsername());
+                        developpeur.setEmail(user1.getEmail());
+                        developpeur.setPhotoName(user1.getPhotoName());
+                        developpeurRepository.save(developpeur);
 
                         break;
                     default:
@@ -258,6 +288,22 @@ public class UtilisateurService {
         return new ResponseEntity<>(userRepository.save(user1), HttpStatus.OK);
 
 
+    }
+
+
+    public List<Developpeur> getAllDev()
+    {
+        return developpeurRepository.findAll();
+    }
+
+    public List<Powner> getAllPowner()
+    {
+        return  pownerRepository.findAll();
+    }
+
+    public  List<Techlead> getAllTechLead()
+    {
+        return techleadRepository.findAll();
     }
 
 

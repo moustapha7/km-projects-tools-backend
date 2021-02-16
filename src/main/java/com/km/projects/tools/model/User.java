@@ -1,6 +1,6 @@
 package com.km.projects.tools.model;
 
-import com.km.projects.tools.model.Role;
+
 import org.hibernate.annotations.NaturalId;
 
 import javax.persistence.*;

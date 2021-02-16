@@ -4,8 +4,7 @@ package com.km.projects.tools.controller;
 import com.km.projects.tools.exception.ResourceNotFoundException;
 import com.km.projects.tools.message.request.ChangePasswordRequest;
 import com.km.projects.tools.message.request.SignupRequest;
-import com.km.projects.tools.model.Role;
-import com.km.projects.tools.model.User;
+import com.km.projects.tools.model.*;
 import com.km.projects.tools.service.UtilisateurService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -98,6 +97,25 @@ public class UserController {
     {
         return utilisateurService.updateRoleUser(id,signupRequest);
     }
+
+    @GetMapping("/listDeveloppeurs")
+    public List<Developpeur> getAllDev()
+    {
+        return utilisateurService.getAllDev();
+    }
+
+    @GetMapping("/listPowners")
+    public List<Powner> getAllPowner()
+    {
+        return utilisateurService.getAllPowner();
+    }
+
+    @GetMapping("/listTechleads")
+    public List<Techlead> getAllTechlead()
+    {
+        return utilisateurService.getAllTechLead();
+    }
+
 
 
 }
