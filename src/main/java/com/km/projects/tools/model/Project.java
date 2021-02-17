@@ -1,5 +1,7 @@
 package com.km.projects.tools.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
@@ -23,10 +25,10 @@ public class Project {
     @Size(min = 5, max = 50)
     private String description;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateDebut;
 
-
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateFin;
 
 

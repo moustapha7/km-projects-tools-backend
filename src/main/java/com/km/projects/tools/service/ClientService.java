@@ -50,6 +50,7 @@ public class ClientService {
         Random rand = new Random();
         String codeClient = String.format("Cli_"+rand.nextInt(100));
 
+        client.setTel(FormatNumberPhoneUtil.getNumberFormat(client.getTel()));
         client.setCode(codeClient);
 
 
@@ -80,7 +81,7 @@ public class ClientService {
             Client client1= clientInfo.get();
             client1.setCode(client.getCode());
             client1.setAdresse(client.getAdresse());
-            client1.setTel(client.getTel());
+            client1.setTel(FormatNumberPhoneUtil.getNumberFormat(client.getTel()));
             client1.setEmail(client.getEmail());
             client1.setPrenom(client.getPrenom());
             client1.setNom(client.getNom());

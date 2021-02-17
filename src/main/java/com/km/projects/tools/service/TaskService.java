@@ -30,8 +30,42 @@ public class TaskService {
         return  ResponseEntity.ok().body(task);
     }
 
-    public ResponseEntity<Task> createTask(Task task)
+    public ResponseEntity<Task> createTask(Task task) throws ResourceNotFoundException
     {
+        if(task.getName() == null)
+        {
+            throw new ResourceNotFoundException("Name can not be null");
+        }
+
+        if(task.getDescription() == null)
+        {
+            throw new ResourceNotFoundException("Description can not be null");
+        }
+
+        if(task.getDateDebut() == null)
+        {
+            throw new ResourceNotFoundException("Date debut can not be null");
+        }
+
+        if(task.getDateFin()== null)
+        {
+            throw new ResourceNotFoundException("Date fin can not be null");
+        }
+
+        if(task.getDeveloppeur() == null)
+        {
+            throw new ResourceNotFoundException("pleaz select a developer");
+        }
+
+        if(task.getProject() == null)
+        {
+            throw new ResourceNotFoundException("pleaz select a project");
+        }
+
+        if(task.getStatusTask() == null)
+        {
+            throw new ResourceNotFoundException("pleaz select a status task");
+        }
 
         Date dateD ;
         Date dateF;
@@ -78,6 +112,41 @@ public class TaskService {
 
         if (taskInfo.isPresent())
         {
+
+            if(task.getName() == null)
+            {
+                throw new ResourceNotFoundException("Name can not be null");
+            }
+
+            if(task.getDescription() == null)
+            {
+                throw new ResourceNotFoundException("Description can not be null");
+            }
+
+            if(task.getDateDebut() == null)
+            {
+                throw new ResourceNotFoundException("Date debut can not be null");
+            }
+
+            if(task.getDateFin()== null)
+            {
+                throw new ResourceNotFoundException("Date fin can not be null");
+            }
+
+            if(task.getDeveloppeur() == null)
+            {
+                throw new ResourceNotFoundException("pleaz select a developer");
+            }
+
+            if(task.getProject() == null)
+            {
+                throw new ResourceNotFoundException("pleaz select a project");
+            }
+
+            if(task.getStatusTask() == null)
+            {
+                throw new ResourceNotFoundException("pleaz select a status task");
+            }
             Task task1= taskInfo.get();
 
             task1.setName(task.getName());

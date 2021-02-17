@@ -34,7 +34,7 @@ public class TaskController {
 
 
     @PostMapping("/tasks")
-    public ResponseEntity<Task> createTask(@Validated @RequestBody Task task)
+    public ResponseEntity<Task> createTask(@Validated @RequestBody Task task) throws ResourceNotFoundException
     {
         return taskService.createTask(task);
     }

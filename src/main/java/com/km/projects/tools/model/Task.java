@@ -1,5 +1,7 @@
 package com.km.projects.tools.model;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import javax.persistence.*;
 import java.util.Date;
 
@@ -16,8 +18,12 @@ public class Task {
     private String name;
     private String description;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateDebut;
+
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date dateFin;
+
     private long estimationJour;
     private long estimationHeure;
 

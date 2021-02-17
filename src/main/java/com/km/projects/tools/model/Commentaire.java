@@ -1,11 +1,10 @@
 package com.km.projects.tools.model;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import javax.persistence.*;
 import java.time.Instant;
-import java.util.Date;
 
 @Entity
 @Table(name = "commentaire")
@@ -19,6 +18,7 @@ public class Commentaire {
     private String content;
 
     @Column
+    @JsonFormat(pattern = "yyyy-MM-dd 'à' HH:mm", timezone = "UTC")
     private Instant createdOn;
 
     @Column
