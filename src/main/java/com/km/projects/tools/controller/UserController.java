@@ -38,11 +38,23 @@ public class UserController {
     }
 
 
+    //find user by id for the photo
     @GetMapping(path =  "/photoUser/{id}", produces = MediaType.IMAGE_PNG_VALUE)
     public byte[] getPhotoUser(@PathVariable Long id) throws Exception
     {
         return utilisateurService.getPhotoUser(id);
     }
+
+    //find user by username for the photo
+    @GetMapping(path =  "/photoUserByUsername/{username}", produces = MediaType.IMAGE_PNG_VALUE)
+    public byte[] getPhotoUserUsername(@PathVariable String  username) throws Exception
+    {
+        return utilisateurService.getPhotoUserByUsername(username);
+    }
+
+
+
+
 
     @PostMapping(path = "/uploadPhotoUser/{id}")
     public void uploadPhotoUser(MultipartFile file, @PathVariable Long id) throws Exception

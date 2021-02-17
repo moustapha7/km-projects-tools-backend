@@ -63,10 +63,10 @@ public class ProjectService {
 
     public Map<String, Boolean> deleteProject(long projectId) throws ResourceNotFoundException
     {
-        Project Project = projectRepository.findById(projectId)
+        Project project = projectRepository.findById(projectId)
                 .orElseThrow(() -> new ResourceNotFoundException("Project  not found"));
 
-        projectRepository.delete(Project);
+        projectRepository.delete(project);
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return response;

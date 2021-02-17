@@ -1,23 +1,24 @@
 package com.km.projects.tools;
 
-import com.km.projects.tools.model.Departement;
-import com.km.projects.tools.model.ERole;
-import com.km.projects.tools.model.Role;
-import com.km.projects.tools.model.StatusProject;
+import com.km.projects.tools.model.*;
 import com.km.projects.tools.repository.DepartementRepository;
 import com.km.projects.tools.repository.RoleRepository;
 import com.km.projects.tools.repository.StatusProjectRepository;
+import com.km.projects.tools.repository.StatusTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class KmProjectsToolsApplication  {
+public class KmProjectsToolsApplication   {
 
 	public static void main(String[] args) {
 		SpringApplication.run(KmProjectsToolsApplication.class, args);
 	}
+
+	@Autowired
+	private StatusTaskRepository statusTaskRepository;
 
 	/*@Autowired
 	private RoleRepository roleRepository;
@@ -49,7 +50,15 @@ public class KmProjectsToolsApplication  {
 		statusProjectRepository.save(new StatusProject("SUSPENDED"));
 		statusProjectRepository.save(new StatusProject("CANCELLED"));
 
-
+statusTaskRepository.save(new StatusTask("ToDo"));
+		statusTaskRepository.save(new StatusTask("Doing"));
+		statusTaskRepository.save(new StatusTask("Done"));
+		statusTaskRepository.save(new StatusTask("Blocked"));
+	}
 	}
 */
+
+
+
+
 }

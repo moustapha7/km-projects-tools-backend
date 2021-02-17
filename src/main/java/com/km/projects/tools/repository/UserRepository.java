@@ -20,6 +20,8 @@ public interface UserRepository extends JpaRepository<User, Long> {
 
     Optional<User> findByCodeOtp(String code);
 
+    User findUserByUsername(String username);
+
     @Query(
             value = "SELECT * FROM USERS u, user_roles ur where u.id = ur.user_id ",
             nativeQuery = true)

@@ -173,12 +173,20 @@ public class UtilisateurService {
     }
 
 
-
+//find user by id for the photo
     public byte[] getPhotoUser( Long id) throws Exception {
         User user = userRepository.findById(id).get();
 
         return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/user/"+ user.getPhotoName()));
     }
+
+    //find user by username for the photo
+    public byte[] getPhotoUserByUsername( String  username) throws Exception {
+        User user = userRepository.findUserByUsername(username);
+
+        return Files.readAllBytes(Paths.get(System.getProperty("user.home")+"/images_km_projects_tools/user/"+ user.getPhotoName()));
+    }
+
 
 
     public void uploadPhotoUser(MultipartFile file, Long id) throws Exception

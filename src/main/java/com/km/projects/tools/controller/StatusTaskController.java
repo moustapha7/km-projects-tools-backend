@@ -1,8 +1,8 @@
 package com.km.projects.tools.controller;
 
 
-import com.km.projects.tools.model.StatusProject;
-import com.km.projects.tools.repository.StatusProjectRepository;
+import com.km.projects.tools.model.StatusTask;
+import com.km.projects.tools.repository.StatusTaskRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,15 +14,15 @@ import java.util.List;
 @RestController
 @RequestMapping("/api")
 @CrossOrigin(origins = {"http://localhost:4200"})
-public class StatusProjectController {
+public class StatusTaskController {
 
     @Autowired
-    private StatusProjectRepository statusProjectRepository;
+    private StatusTaskRepository statusTaskRepository;
 
 
-    @GetMapping("/statusProjects")
-    private List<StatusProject> getAllStatusProject()
+    @GetMapping("/statusTasks")
+    private List<StatusTask> getAllStatusTask()
     {
-        return statusProjectRepository.findAll();
+        return statusTaskRepository.findAll();
     }
 }
