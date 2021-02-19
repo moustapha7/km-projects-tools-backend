@@ -90,7 +90,7 @@ public class Commentaire {
                 ", content='" + content + '\'' +
                 ", createdOn=" + createdOn +
                 ", username='" + username + '\'' +
-
+                ", project='" + project + '\'' +
                 '}';
     }
 }

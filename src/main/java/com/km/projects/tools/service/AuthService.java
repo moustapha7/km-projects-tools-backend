@@ -101,7 +101,7 @@ public class AuthService {
         }
 
         if (userRepository.existsByEmail(signUpRequest.getEmail())) {
-            throw new ResourceNotFoundException("Error: Email is already in use!");
+            throw new ResourceNotFoundException("Error: Email is already exist!");
         }
 
         if(!signUpRequest.getPassword().equals(signUpRequest.getConfirmPassword())) {

@@ -33,7 +33,7 @@ public class ProjectService {
     public ResponseEntity<Project> getProjectById( long projectId) throws ResourceNotFoundException
     {
         Project project = projectRepository.findById(projectId)
-                .orElseThrow(() -> new ResourceNotFoundException("project non trouvé"));
+                .orElseThrow(() -> new ResourceNotFoundException("project not found"));
         return  ResponseEntity.ok().body(project);
 
     }
@@ -101,8 +101,8 @@ public class ProjectService {
 
             project1.setTeam(project.getTeam());
             project1.setClient(project.getClient());
-            project1.setUserpo(project.getUserpo());
-            project1.setUserteach(project.getUserteach());
+            project1.setPowner(project.getPowner());
+            project1.setTechlead(project.getTechlead());
             project1.setProjectType(project.getProjectType());
             project1.setStatusProject(project.getStatusProject());
 

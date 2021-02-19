@@ -47,12 +47,12 @@ public class Project {
     private Client client;
 
     @ManyToOne
-    @JoinColumn(name = "PRODUCT_OWNER", nullable = true)
-    private User userpo;
+    @JoinColumn(name = "POWNER_ID", nullable = true)
+    private Powner powner;
 
     @ManyToOne
-    @JoinColumn(name = "TEACH_LEAD", nullable = true)
-    private User userteach;
+    @JoinColumn(name = "TECHLEAD_ID", nullable = true)
+    private Techlead techlead;
 
     @ManyToOne
     @JoinColumn(name = "PROJECT_TYPE_ID", nullable = true)
@@ -66,8 +66,9 @@ public class Project {
     public Project() {
     }
 
-    public Project(long id, String name,  String description,  Date dateDebut, Date dateFin,  long estimationJour,
-                   long estimationHeure,  String photoName, Team team, Client client, User userpo, User userteach, ProjectType projectType, StatusProject statusProject) {
+    public Project(long id, @NotBlank @Size(min = 3, max = 50) String name, @NotBlank @Size(min = 5, max = 50) String description, Date dateDebut, Date dateFin,
+                   long estimationJour, long estimationHeure, String photoName, Team team, Client client, Powner powner,
+                   Techlead techlead, ProjectType projectType, StatusProject statusProject) {
         this.id = id;
         this.name = name;
         this.description = description;
@@ -78,8 +79,8 @@ public class Project {
         this.photoName = photoName;
         this.team = team;
         this.client = client;
-        this.userpo = userpo;
-        this.userteach = userteach;
+        this.powner = powner;
+        this.techlead = techlead;
         this.projectType = projectType;
         this.statusProject = statusProject;
     }
@@ -164,20 +165,20 @@ public class Project {
         this.client = client;
     }
 
-    public User getUserpo() {
-        return userpo;
+    public Powner getPowner() {
+        return powner;
     }
 
-    public void setUserpo(User userpo) {
-        this.userpo = userpo;
+    public void setPowner(Powner powner) {
+        this.powner = powner;
     }
 
-    public User getUserteach() {
-        return userteach;
+    public Techlead getTechlead() {
+        return techlead;
     }
 
-    public void setUserteach(User userteach) {
-        this.userteach = userteach;
+    public void setTechlead(Techlead techlead) {
+        this.techlead = techlead;
     }
 
     public ProjectType getProjectType() {
@@ -209,8 +210,8 @@ public class Project {
                 ", photoName='" + photoName + '\'' +
                 ", team=" + team +
                 ", client=" + client +
-                ", userpo=" + userpo +
-                ", userteach=" + userteach +
+                ", powner=" + powner +
+                ", techlead=" + techlead +
                 ", projectType=" + projectType +
                 ", statusProject=" + statusProject +
                 '}';

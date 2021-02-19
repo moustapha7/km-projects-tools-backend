@@ -47,6 +47,7 @@ public class ClientService {
             throw new ResourceNotFoundException("Error: Ce numero téléphone existe déja!");
         }
 
+
         Random rand = new Random();
         String codeClient = String.format("Cli_"+rand.nextInt(100));
 

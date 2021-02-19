@@ -17,20 +17,20 @@ public class Client {
     @Column(unique = true)
     private String code;
 
-    @NotBlank
+
     private String prenom;
 
-    @NotBlank
+
     private String nom;
 
-    @NotBlank
+
     private String adresse;
 
-    @NotBlank
+
     @Column(unique = true)
     private String tel;
 
-    @NotBlank
+
     @Email
     @Column(unique = true)
     private String email;
